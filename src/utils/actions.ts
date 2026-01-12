@@ -141,4 +141,3 @@ export async function userSubscribe(
 export async function logoutAction() {
   return await logoutUser();
 }
-
