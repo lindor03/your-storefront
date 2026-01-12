@@ -16,6 +16,9 @@ interface ThemeCustomizationItem {
       html?: string | null;
       filters?: {
         limit?: string;
+        sort?: string;
+        new?: string | number;
+        featured?: string | number;
       };
     };
   }[];
@@ -46,12 +49,7 @@ const RenderThemeCustomization: FC<RenderThemeCustomizationProps> = ({
 
         switch (item.type) {
           case "image_carousel":
-            return (
-              <ImageCarousel
-                key={item.id}
-                options={options}
-              />
-            );
+            return <ImageCarousel key={item.id} options={options} />;
 
           case "product_carousel": {
             productCarouselIndex++;
@@ -73,12 +71,7 @@ const RenderThemeCustomization: FC<RenderThemeCustomizationProps> = ({
           }
 
           case "category_carousel":
-            return (
-              <CategoryCarousel
-                key={item.id}
-                options={options}
-              />
-            );
+            return <CategoryCarousel key={item.id} options={options} />;
 
           default:
             return null;
