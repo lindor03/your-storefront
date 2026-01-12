@@ -63,6 +63,9 @@ importers:
         specifier: ^9.2.0
         version: 9.2.0(@types/react@19.2.7)(react@19.2.0)(redux@5.0.1)
     devDependencies:
+      '@react-types/shared':
+        specifier: ^3.32.1
+        version: 3.32.1(react@19.2.0)
       '@tailwindcss/postcss':
         specifier: ^4
         version: 4.1.18
