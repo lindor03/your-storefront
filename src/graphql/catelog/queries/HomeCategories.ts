@@ -2,15 +2,18 @@ import { gql } from "@apollo/client";
 
 export const GET_HOME_CATEGORIES = gql`
   query HomeCategories {
-    homeCategories {
+    homeCategories(
+      getCategoryTree: false
+      input: [{ key: "status", value: "1" }]
+    ) {
       id
       position
       logoPath
-      translation {
-        id
-        name
-        slug
-      }
+      logoUrl
+      status
+      name
+      slug
+      urlPath
     }
   }
 `;
