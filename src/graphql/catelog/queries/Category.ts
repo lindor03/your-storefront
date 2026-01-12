@@ -1,21 +1,19 @@
 import { gql } from "@apollo/client";
 
-export const GET_TREE_CATEGORIES = gql`
-  query treeCategories($parentId: Int) {
-    treeCategories(parentId: $parentId) {
-      id
-      position
-      logoPath
-      status
-      translations {
-        edges {
-          node {
-            name
-            slug
-            urlPath
-            description
-            metaTitle
-          }
+export const GET_CATEGORIES = gql`
+  query Categories {
+    categories {
+      data {
+        id
+        position
+        logoPath
+        status
+        translation {
+          name
+          slug
+          urlPath
+          description
+          metaTitle
         }
       }
     }
