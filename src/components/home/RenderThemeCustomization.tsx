@@ -3,65 +3,89 @@ import ImageCarousel from "./ImageCarousel";
 import ProductCarousel from "./ProductCarousel";
 import CategoryCarousel from "./CategoryCarousel";
 
-interface RenderThemeCustomizationProps {
-    themeCustomizations: {
-        edges: {
-            node: {
-                id: string;
-                type: string;
-                name: string;
-                translations: {
-                    edges: {
-                        node: {
-                            locale: string;
-                            options: string;
-                        };
-                    }[];
-                };
-            };
-        }[];
+interface ThemeCustomizationItem {
+  id: string;
+  type: string;
+  name: string;
+  status: boolean;
+  translations: {
+    id: string;
+    options: {
+      title?: string | null;
+      css?: string | null;
+      html?: string | null;
+      filters?: {
+        limit?: string;
+      };
     };
+  }[];
 }
 
-const RenderThemeCustomization: FC<RenderThemeCustomizationProps> = ({ themeCustomizations }) => {
-    if (!themeCustomizations?.edges?.length) return null;
+interface RenderThemeCustomizationProps {
+  themeCustomizations: ThemeCustomizationItem[];
+}
 
-    let productCarouselIndex = 0;
+const RenderThemeCustomization: FC<RenderThemeCustomizationProps> = ({
+  themeCustomizations,
+}) => {
+  if (!Array.isArray(themeCustomizations) || themeCustomizations.length === 0) {
+    return null;
+  }
 
-    return (
-        <section className="flex w-full max-w-screen-2xl mx-auto flex-col gap-y-10 pb-4 md:gap-y-20 px-[15px] xss:px-7.5">
-            {themeCustomizations.edges.map(({ node }) => {
-                const translation = node.translations.edges.find(e => e.node.locale === 'en') || node.translations.edges[0];
+  let productCarouselIndex = 0;
 
-                if (!translation) return null;
+  return (
+    <section className="mx-auto flex w-full max-w-screen-2xl flex-col gap-y-10 px-[15px] pb-4 md:gap-y-20 xss:px-7.5">
+      {themeCustomizations.map((item) => {
+        if (!item.status) return null;
 
-                let options = {};
-                try {
-                    options = JSON.parse(translation.node.options);
-                } catch (e) {
-                    console.error("Error parsing options for", node.type, e);
-                    return null;
-                }
+        const translation = item.translations?.[0];
+        if (!translation) return null;
 
-                switch (node.type) {
-                    case "image_carousel":
-                        return <ImageCarousel key={node.id} options={options as any} />;
-                    case "product_carousel": {
-                        productCarouselIndex++;
-                        const opts = options as any;
-                        const limit = opts?.filters?.limit ? parseInt(opts.filters.limit, 10) : null;
-                        const itemCount = limit || (productCarouselIndex === 1 ? 3 : 4);
+        const options = translation.options ?? {};
 
-                        return <ProductCarousel key={node.id} options={{ ...options, title: node.name } as any} itemCount={itemCount} />;
-                    }
-                    case "category_carousel":
-                        return <CategoryCarousel key={node.id} options={options as any} />;
-                    default:
-                        return null;
-                }
-            })}
-        </section>
-    );
+        switch (item.type) {
+          case "image_carousel":
+            return (
+              <ImageCarousel
+                key={item.id}
+                options={options}
+              />
+            );
+
+          case "product_carousel": {
+            productCarouselIndex++;
+
+            const limit = options.filters?.limit
+              ? parseInt(options.filters.limit, 10)
+              : undefined;
+
+            const itemCount =
+              limit ?? (productCarouselIndex === 1 ? 3 : 4);
+
+            return (
+              <ProductCarousel
+                key={item.id}
+                options={{ ...options, title: item.name }}
+                itemCount={itemCount}
+              />
+            );
+          }
+
+          case "category_carousel":
+            return (
+              <CategoryCarousel
+                key={item.id}
+                options={options}
+              />
+            );
+
+          default:
+            return null;
+        }
+      })}
+    </section>
+  );
 };
 
 export default RenderThemeCustomization;
