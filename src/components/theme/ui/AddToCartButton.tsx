@@ -9,12 +9,10 @@ import LoadingDots from "@components/common/icons/LoadingDots";
 
 export default function AddToCartButton({
   productType,
-  productUrlKey,
-  productId 
+  productId,
 }: {
   productType?: string;
-  productId: string
-  productUrlKey: string;
+  productId: string;
 }) {
   const { isCartLoading,
     onAddToCart
@@ -46,7 +44,7 @@ export default function AddToCartButton({
       className={clsx(buttonClasses, {
         "hover:opacity-90": true,
       })}
-      href={`/product/${productUrlKey}`}
+      href={`/product/${productId}`}
       type="submit"
     >
       <ShoppingCartIcon className="size-6 -rotate-6 stroke-black stroke-[1.5]" />

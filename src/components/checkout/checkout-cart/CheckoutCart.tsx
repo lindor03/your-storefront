@@ -28,7 +28,7 @@ export default function CheckoutCart({ cartItems, selectedShippingRate : _id }: 
               cart?.map((item: any, i: number) => {
                 const merchandiseSearchParams = {} as MerchandiseSearchParams;
                 const merchandiseUrl = createUrl(
-                  `/product/${item?.node.productUrlKey}`,
+                  `/product/${item?.node.productId}?type=${item?.node.type}`,
                   new URLSearchParams(merchandiseSearchParams)
                 );
                 const baseImage = JSON.parse(item?.node?.baseImage);

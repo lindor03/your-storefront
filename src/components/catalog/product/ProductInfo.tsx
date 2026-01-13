@@ -14,6 +14,7 @@ export default async function ProductInfo({
   reviews: ProductReviewNode[];
   totalReview: number;
 }) {
+
   const productSwatchReview = await getProductWithSwatchAndReview(slug);
 
   return (

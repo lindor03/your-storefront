@@ -7,16 +7,16 @@ export async function RelatedProductsSection({
 }: {
   fullPath: string;
 }) {
-    async function getRelatedProduct(urlKey: string) {
+    async function getRelatedProduct(productIdentifier: string) {
       try {
         const dataById = await graphqlRequest<SingleProductResponse>(
           GET_RELATED_PRODUCTS,
           {
-            urlKey: urlKey,
+            id: productIdentifier,
             first: 4,
           },
           {
-            tags: ["related-products", `product-${urlKey}`],
+            tags: ["related-products", `product-${productIdentifier}`],
             life: "hours",
           }
         );
@@ -26,7 +26,7 @@ export async function RelatedProductsSection({
         if (error instanceof Error) {
           console.error("Error fetching product:", {
             message: error.message,
-            urlKey,
+            productIdentifier,
             graphQLErrors: (error as unknown as Record<string, unknown>)
               .graphQLErrors,
           });

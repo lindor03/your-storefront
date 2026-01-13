@@ -6,7 +6,7 @@ import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { Avatar } from "@heroui/avatar";
 import { useForm } from "react-hook-form";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useCustomToast } from '@/utils/hooks/useToast';
 import OpenAuth from "../OpenAuth";
 import { isObject } from '@/utils/type-guards';
@@ -18,6 +18,7 @@ import { logoutAction } from "@utils/actions";
 
 export default function CredentialModal() {
   const pathname = usePathname();
+  const router = useRouter();
   const { showToast } = useCustomToast();
   const [isOpen, setOpen] = useState(false);
   const { resetGuestToken } = useGuestCartToken();
@@ -37,16 +38,14 @@ export default function CredentialModal() {
       showToast(res.message, "danger");
     }
 
-    await signOut({
+    const result = await signOut({
       callbackUrl: "/customer/login",
       redirect: false,
     });
 
-    await resetGuestToken();
     showToast("You are logged out successfully!", "success");
-    setTimeout(() => {
-      window.location.href = "/customer/login";
-    }, 100);
+     await resetGuestToken();
+    router.push(result.url);
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Logout failed";
     showToast(message, "danger");

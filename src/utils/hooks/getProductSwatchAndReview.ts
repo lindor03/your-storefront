@@ -2,15 +2,15 @@ import { SingleProductResponse } from "@/app/(public)/product/[...urlProduct]/pa
 import { GET_PRODUCT_SWATCH_REVIEW, graphqlRequest } from "@/graphql";
 
 
-export async function getProductWithSwatchAndReview(urlKey: string) {
+export async function getProductWithSwatchAndReview(productIdentifier: string) {
   try {
     const dataById = await graphqlRequest<SingleProductResponse>(
       GET_PRODUCT_SWATCH_REVIEW,
       {
-        urlKey: urlKey,
+        id: productIdentifier,
       },
       {
-        tags: ["swatch-and-reviews", `product-${urlKey}`],
+        tags: ["swatch-and-reviews", `product-${productIdentifier}`],
         life: "hours",
       }
     );
@@ -20,7 +20,7 @@ export async function getProductWithSwatchAndReview(urlKey: string) {
     if (error instanceof Error) {
       console.error("Error fetching product:", {
         message: error.message,
-        urlKey,
+        productIdentifier,
         graphQLErrors: (error as unknown as Record<string, unknown>)
           .graphQLErrors,
       });

@@ -62,19 +62,19 @@ export const GET_PRODUCTS = gql`
  * Fetch a single product by ID with all details
  * @param id - Product ID
  */
-export const GET_PRODUCT_BY_URL_KEY = gql`
+export const GET_PRODUCT_BY_ID = gql`
   ${PRODUCT_DETAILED_FRAGMENT}
 
-  query GetProductById($urlKey: String!) {
-    product(urlKey: $urlKey) {
+  query GetProductById($id: ID!) {
+    product(id: $id) {
       ...ProductDetailed
     }
   }
 `;
 
 export const GET_PRODUCT_SWATCH_REVIEW = gql`
-  query ProductSwatchReview($urlKey: String!) {
-    product(urlKey: $urlKey) {
+  query ProductSwatchReview($id: ID!) {
+    product(id: $id) {
       id
       name
       sku
@@ -168,8 +168,8 @@ export const GET_PRODUCTS_PAGINATION = gql`
 export const GET_RELATED_PRODUCTS = gql`
   ${PRODUCT_SECTION_FRAGMENT}
 
-  query GetRelatedProducts($urlKey: String, $first: Int) {
-    product(urlKey: $urlKey) {
+  query GetRelatedProducts($id: ID!, $first: Int) {
+    product(id: $id) {
       id
       sku
       relatedProducts(first: $first) {

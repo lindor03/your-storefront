@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const GET_TREE_CATEGORIES = gql`
-  query treeCategories($parentId: String) {
+  query treeCategories($parentId: Int) {
     treeCategories(parentId: $parentId) {
       id
       position
